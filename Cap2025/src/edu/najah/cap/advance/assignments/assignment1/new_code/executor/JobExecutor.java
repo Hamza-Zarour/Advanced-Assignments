@@ -1,9 +1,9 @@
-package edu.najah.cap.advance.assignments.assignment1.executor;
+package edu.najah.cap.advance.assignments.assignment1.new_code.executor;
 
 
-import edu.najah.cap.advance.assignments.assignment1.connections.Connection;
-import edu.najah.cap.advance.assignments.assignment1.connections.ConnectionManager;
-import edu.najah.cap.advance.assignments.assignment1.job.Job;
+import edu.najah.cap.advance.assignments.assignment1.new_code.connections.Connection;
+import edu.najah.cap.advance.assignments.assignment1.new_code.connections.ConnectionManager;
+import edu.najah.cap.advance.assignments.assignment1.new_code.job.Job;
 
 /*
  * Naive executor: performs all job types in one class using if/else.

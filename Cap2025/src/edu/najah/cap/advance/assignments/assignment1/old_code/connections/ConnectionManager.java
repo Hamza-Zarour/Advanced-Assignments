@@ -1,4 +1,4 @@
-package edu.najah.cap.advance.assignments.assignment1.connections;
+package edu.najah.cap.advance.assignments.assignment1.old_code.connections;
 
 /*
  * Naive connection manager: creates a new connection each time (no pooling),

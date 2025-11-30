@@ -1,4 +1,4 @@
-package edu.najah.cap.advance.assignments.assignment1.connections;
+package edu.najah.cap.advance.assignments.assignment1.new_code.connections;
 
 public class Connection {
     private final String id;

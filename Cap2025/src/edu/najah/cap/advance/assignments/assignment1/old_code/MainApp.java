@@ -1,10 +1,10 @@
-package edu.najah.cap.advance.assignments.assignment1;
+package edu.najah.cap.advance.assignments.assignment1.old_code;
 
-import edu.najah.cap.advance.assignments.assignment1.connections.ConnectionManager;
-import edu.najah.cap.advance.assignments.assignment1.executor.JobExecutor;
-import edu.najah.cap.advance.assignments.assignment1.job.Job;
-import edu.najah.cap.advance.assignments.assignment1.model.User;
-import edu.najah.cap.advance.assignments.assignment1.templates.TemplateManager;
+import edu.najah.cap.advance.assignments.assignment1.old_code.connections.ConnectionManager;
+import edu.najah.cap.advance.assignments.assignment1.old_code.executor.JobExecutor;
+import edu.najah.cap.advance.assignments.assignment1.old_code.job.Job;
+import edu.najah.cap.advance.assignments.assignment1.old_code.model.User;
+import edu.najah.cap.advance.assignments.assignment1.old_code.templates.TemplateManager;
 
 import java.util.Arrays;
 

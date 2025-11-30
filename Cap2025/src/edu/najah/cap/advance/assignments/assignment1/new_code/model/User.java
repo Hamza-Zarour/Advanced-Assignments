@@ -1,6 +1,7 @@
-package edu.najah.cap.advance.assignments.assignment1.model;
+package edu.najah.cap.advance.assignments.assignment1.new_code.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User {
     private final String name;

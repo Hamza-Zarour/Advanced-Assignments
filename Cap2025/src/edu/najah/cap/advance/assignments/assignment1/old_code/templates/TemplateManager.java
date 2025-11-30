@@ -1,4 +1,4 @@
-package edu.najah.cap.advance.assignments.assignment1.templates;
+package edu.najah.cap.advance.assignments.assignment1.old_code.templates;
 
 /*
  * Naive TemplateManager: builds heavy templates from scratch each time (simulated via sleep)
