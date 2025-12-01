@@ -1,7 +1,9 @@
 package edu.najah.cap.advance.assignments.assignment1.new_code;
 
-import edu.najah.cap.advance.assignments.assignment1.new_code.connections.ConnectionManager;
+import edu.najah.cap.advance.assignments.assignment1.new_code.connections.ConnectionPool;
 import edu.najah.cap.advance.assignments.assignment1.new_code.executor.JobExecutor;
+import edu.najah.cap.advance.assignments.assignment1.new_code.executor.JobExecutorProxy;
+import edu.najah.cap.advance.assignments.assignment1.new_code.executor.JobExecutorService;
 import edu.najah.cap.advance.assignments.assignment1.new_code.job.Job;
 import edu.najah.cap.advance.assignments.assignment1.new_code.model.User;
 import edu.najah.cap.advance.assignments.assignment1.new_code.templates.TemplateManager;
@@ -10,33 +12,42 @@ import java.util.Arrays;
 
 public class MainApp {
     public static void main(String[] args) {
-        System.out.println("=== TMPS Naive Starter App ===");
+        System.out.println("=== TMPS Refactored (clean new_code) ===");
 
-        // create a naive ConnectionManager (not a pool)
-        ConnectionManager connManager = new ConnectionManager();
-
-        // naive TemplateManager (builds templates from scratch each time)
+        // 1) Template Manager + Connection Pool
+        ConnectionPool connectionPool = new ConnectionPool();
         TemplateManager templateManager = new TemplateManager();
 
-        // naive executor (does everything with if/else)
-        JobExecutor executor = new JobExecutor(connManager);
+        //  2) Register templates
+        templateManager.registerReportJobTemplate(
+                "REPORT_MONTHLY",
+                "MonthlyReport",
+                "format=PDF;brand=TaskMaster"
+        );
+        templateManager.registerEmailTemplate(
+                "EMAIL_MONTHLY",
+                "Monthly email Report",
+                "format=PDF;all=true"
+        );
 
-        User alice = new User("alice", Arrays.asList("EMAIL", "REPORT")); // incomplete permissions
+        // 3) Executor + Proxy
+        JobExecutor realExecutor = new JobExecutor();
+        JobExecutorProxy executor = new JobExecutorProxy(realExecutor, connectionPool);
 
-        // Demo: create a report job from template and execute
-        System.out.println("\n--- Create Report Job from template (naive build) ---");
+        User alice = new User("alice", Arrays.asList("EMAIL", "REPORT"));
 
-        //TODO problem 1: each time want to create job, it takes time to load and create job which includes creating template and then create job
-        Job reportJob = templateManager.buildReportJobTemplate("MonthlyReport", "format=PDF;brand=TaskMaster").createJobInstance(); // builds from scratch
+        System.out.println("\n--- Create Report Job from prototype ---");
+        Job reportJob = templateManager.createJobFromTemplate("REPORT_MONTHLY");
         reportJob.setRequestedBy(alice);
 
-        System.out.println("\n--- Execute job (naive executor) ---");
+        System.out.println("\n--- Execute job (via Proxy) ---");
         executor.executeJob(reportJob);
 
-        Job reportJob2 = templateManager.buildEmailJobTemplate("Monthly email Report", "format=PDF;all=true").createJobInstance(); // builds from scratch
-        reportJob2.setRequestedBy(alice);
+        System.out.println("\n--- Create Email Job from prototype ---");
+        Job emailJob = templateManager.createJobFromTemplate("EMAIL_MONTHLY");
+        emailJob.setRequestedBy(alice);
 
-        System.out.println("\n--- Execute job (naive executor) ---");
-        executor.executeJob(reportJob2);
+        System.out.println("\n--- Execute job (via Proxy) ---");
+        executor.executeJob(emailJob);
     }
 }

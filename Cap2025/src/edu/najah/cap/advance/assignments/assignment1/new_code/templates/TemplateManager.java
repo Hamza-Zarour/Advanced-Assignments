@@ -1,29 +1,38 @@
 package edu.najah.cap.advance.assignments.assignment1.new_code.templates;
 
+import edu.najah.cap.advance.assignments.assignment1.new_code.job.Job;
+
 /*
- * Naive TemplateManager: builds heavy templates from scratch each time (simulated via sleep)
+ * TemplateManager now builds heavy templates ONCE and stores them as prototypes.
+ * Later, jobs are created by cloning prototypes via JobTemplateRegistry.
  */
 public class TemplateManager {
 
-    public HeavyTemplate buildEmailJobTemplate(String templateName, String config) {
-        var templateBody =  simulateHeavyLoad("EmailTemplate:"+templateName);
-        HeavyTemplate t = new HeavyTemplate("EMAIL", templateName, config, templateBody);
-        System.out.println("Built Email template (heavy): " + templateName);
-        return t;
+    private final JobTemplateRegistry registry = new JobTemplateRegistry();
+
+    public void registerEmailTemplate(String key, String templateName, String config) {
+        String body = simulateHeavyLoad("EmailTemplate:" + templateName);
+        EmailJobTemplate prototype = new EmailJobTemplate(templateName, config, body);
+        registry.registerTemplate(key, prototype);
+        System.out.println("Registered Email template (prototype): " + templateName);
     }
 
-    public HeavyTemplate buildDataProcessingTemplate(String templateName, String config) {
-        var templateBody = simulateHeavyLoad("DataTemplate:"+templateName);
-        HeavyTemplate t = new HeavyTemplate("DATA", templateName, config, templateBody);
-        System.out.println("Built DataProcessing template (heavy): " + templateName);
-        return t;
+    public void registerDataProcessingTemplate(String key, String templateName, String config) {
+        String body = simulateHeavyLoad("DataTemplate:" + templateName);
+        DataProcessingJobTemplate prototype = new DataProcessingJobTemplate(templateName, config, body);
+        registry.registerTemplate(key, prototype);
+        System.out.println("Registered DataProcessing template (prototype): " + templateName);
     }
 
-    public HeavyTemplate buildReportJobTemplate(String templateName, String config) {
-        var templateBody = simulateHeavyLoad("ReportTemplate:"+templateName);
-        HeavyTemplate t = new HeavyTemplate("REPORT", templateName, config, templateBody);
-        System.out.println("Built Report template (heavy): " + templateName);
-        return t;
+    public void registerReportJobTemplate(String key, String templateName, String config) {
+        String body = simulateHeavyLoad("ReportTemplate:" + templateName);
+        ReportJobTemplate prototype = new ReportJobTemplate(templateName, config, body);
+        registry.registerTemplate(key, prototype);
+        System.out.println("Registered Report template (prototype): " + templateName);
+    }
+
+    public Job createJobFromTemplate(String key) {
+        return registry.createJobFromTemplate(key);
     }
 
     private String simulateHeavyLoad(String msg) {

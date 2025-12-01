@@ -8,7 +8,7 @@ public class Connection {
     public String getId() {
         return id;
     }
-    // naive query simulation
+
     public void executeQuery(String q) {
         System.out.printf("[Conn %s] Executing query: %s%n", id, q);
     }
