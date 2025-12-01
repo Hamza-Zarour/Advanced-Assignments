@@ -3,7 +3,6 @@ package edu.najah.cap.advance.assignments.assignment1.new_code;
 import edu.najah.cap.advance.assignments.assignment1.new_code.connections.ConnectionPool;
 import edu.najah.cap.advance.assignments.assignment1.new_code.executor.JobExecutor;
 import edu.najah.cap.advance.assignments.assignment1.new_code.executor.JobExecutorProxy;
-import edu.najah.cap.advance.assignments.assignment1.new_code.executor.JobExecutorService;
 import edu.najah.cap.advance.assignments.assignment1.new_code.job.Job;
 import edu.najah.cap.advance.assignments.assignment1.new_code.model.User;
 import edu.najah.cap.advance.assignments.assignment1.new_code.templates.TemplateManager;
