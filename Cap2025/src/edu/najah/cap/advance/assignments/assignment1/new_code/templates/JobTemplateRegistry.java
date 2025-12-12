@@ -23,7 +23,7 @@ public class JobTemplateRegistry {
 
     public Job createJobFromTemplate(String key) {
         JobPrototype original = getPrototype(key);
-        JobPrototype clone = original.clonePrototype();
+        JobPrototype clone = original.clonePrototype();// بنعمل نسخة عنه بالكلون
         return clone.createJobInstance();
     }
 }

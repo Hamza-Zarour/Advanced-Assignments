@@ -1,0 +1,157 @@
+@startuml
+title UML Class Diagram
+
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+package "new_code" {
+
+  package "decorator" {
+
+    interface DataTransformer {
+      + String transform(String data, Event e)
+    }
+
+    class BaseTransformer {
+      + String transform(String data, Event e)
+    }
+
+    abstract class TransformerDecorator {
+      # DataTransformer inner
+      + TransformerDecorator(DataTransformer inner)
+      + String transform(String data, Event e)
+    }
+
+    class EncryptionDecorator {
+      + EncryptionDecorator(DataTransformer inner)
+      + String transform(String data, Event e)
+    }
+
+    class CompressionDecorator {
+      + CompressionDecorator(DataTransformer inner)
+      + String transform(String data, Event e)
+    }
+
+    class MetadataDecorator {
+      + MetadataDecorator(DataTransformer inner)
+      + String transform(String data, Event e)
+    }
+
+    class TransformerChainBuilder {
+      + DataTransformer buildFor(Event e)
+    }
+  }
+
+  package "observer" {
+
+    interface EventListener {
+      + void onEventProcessed(Event e)
+    }
+
+    class DashboardListener {
+      + void onEventProcessed(Event e)
+    }
+
+    class LoggerListener {
+      + void onEventProcessed(Event event)
+    }
+
+    class EventPublisher {
+      - List<EventListener> listeners
+      + void subscribe(EventListener listener)
+      + void publish(Event e)
+    }
+  }
+
+  package "strategy" {
+
+    interface EventStrategy {
+      + void execute(Event event)
+    }
+
+    class UserEventStrategy {
+      + void execute(Event event)
+    }
+
+    class SystemEventStrategy {
+      + void execute(Event event)
+    }
+
+    class SecurityEventStrategy {
+      + void execute(Event event)
+    }
+
+    class EventStrategyFactory {
+      + EventStrategy getStrategy(String eventType)
+    }
+  }
+
+  class App
+
+  class Event {
+    - String type
+    - String payload
+    - boolean encrypt
+    - boolean compress
+    - boolean addMetadata
+    - String metadata
+    - String id
+    + Event(String type, String payload)
+    + String getType()
+    + void setType(String type)
+    + String getPayload()
+    + void setPayload(String payload)
+    + boolean isEncrypt()
+    + void setEncrypt(boolean encrypt)
+    + boolean isCompress()
+    + void setCompress(boolean compress)
+    + boolean isAddMetadata()
+    + void setAddMetadata(boolean addMetadata)
+    + String getMetadata()
+    + void setMetadata(String metadata)
+    + String getId()
+    + void setId(String id)
+  }
+
+  class Database {
+    + void save(String id, String data)
+  }
+
+  class EventProcessor {
+    - Database database
+    - decorator.TransformerChainBuilder chainBuilder
+    - strategy.EventStrategyFactory strategyFactory
+    - observer.EventPublisher publisher
+    + EventProcessor(Database database, strategy.EventStrategyFactory strategyFactory, observer.EventPublisher publisher)
+    + void process(Event e)
+  }
+}
+
+' =========================
+' IMPLEMENTS / IS-A
+' =========================
+new_code.decorator.BaseTransformer ..|> new_code.decorator.DataTransformer
+new_code.decorator.TransformerDecorator ..|> new_code.decorator.DataTransformer
+new_code.decorator.EncryptionDecorator --|> new_code.decorator.TransformerDecorator
+new_code.decorator.CompressionDecorator --|> new_code.decorator.TransformerDecorator
+new_code.decorator.MetadataDecorator --|> new_code.decorator.TransformerDecorator
+
+new_code.observer.DashboardListener ..|> new_code.observer.EventListener
+new_code.observer.LoggerListener ..|> new_code.observer.EventListener
+
+new_code.strategy.UserEventStrategy ..|> new_code.strategy.EventStrategy
+new_code.strategy.SystemEventStrategy ..|> new_code.strategy.EventStrategy
+new_code.strategy.SecurityEventStrategy ..|> new_code.strategy.EventStrategy
+
+' =========================
+' HAS-A (composition/aggregation)
+' =========================
+new_code.decorator.TransformerDecorator o--> new_code.decorator.DataTransformer : inner
+new_code.observer.EventPublisher o--> new_code.observer.EventListener : listeners
+
+new_code.EventProcessor *--> new_code.Database : database
+new_code.EventProcessor *--> new_code.decorator.TransformerChainBuilder : chainBuilder
+new_code.EventProcessor *--> new_code.strategy.EventStrategyFactory : strategyFactory
+new_code.EventProcessor *--> new_code.observer.EventPublisher : publisher
+
+@enduml
